@@ -2,7 +2,7 @@
   "name": "dungeon-masters-guide",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://<username>.github.io/dungeon-masters-guide",
+  "homepage": "https://zokkaxdj9.github.io/dungeon-masters-guide",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
