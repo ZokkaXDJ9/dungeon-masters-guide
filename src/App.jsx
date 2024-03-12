@@ -9,6 +9,8 @@ import NPCGenerator from './components/NPCGenerator';
 import SignupForm from './components/SignupForm';
 import LoginForm from './components/LoginForm';
 import UserProfile from './components/UserProfile';
+import VerifyEmail from './components/VerifyEmail';
+
 
 const App = () => {
   const [campaigns, setCampaigns] = useState([]);
@@ -26,6 +28,8 @@ const App = () => {
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/user-profile" element={<UserProfile />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+
         </Routes>
       </div>
     </Router>

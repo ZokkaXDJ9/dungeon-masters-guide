@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebaseConfig';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile, signOut } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 
 const SignupForm = () => {
@@ -9,38 +9,43 @@ const SignupForm = () => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
-  const [showLoginButton, setShowLoginButton] = useState(false); // State to control the login button display
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [showLoginButton, setShowLoginButton] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
-    setShowLoginButton(false); // Reset the login button visibility
+    setShowLoginButton(false);
+
+    if (!username) {
+      setError('Please enter a username.');
+      return;
+    }
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, { displayName: username });
 
-      // Save the additional user info in Firestore
+      await sendEmailVerification(userCredential.user);
+
       await setDoc(doc(db, 'users', userCredential.user.uid), {
         username: username,
         email: email,
-        // Add any other user info here
       });
 
-      // Redirect the user after successful signup
-      navigate('/');
+      await signOut(auth);
+      navigate('/verify-email');
     } catch (error) {
       setError(error.message);
       if (error.code === 'auth/email-already-in-use') {
         setError('Email already in use. Please login.');
-        setShowLoginButton(true); // Show the login button
+        setShowLoginButton(true);
       }
     }
   };
 
   const navigateToLogin = () => {
-    navigate('/login'); // Navigate to the login page
+    navigate('/login');
   };
 
   return (
@@ -51,6 +56,7 @@ const SignupForm = () => {
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          required // Ensures the form cannot be submitted without filling this field
         />
       </label>
       <label>
@@ -59,6 +65,7 @@ const SignupForm = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
       </label>
       <label>
@@ -67,6 +74,7 @@ const SignupForm = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
       </label>
       <button type="submit">Sign Up</button>
