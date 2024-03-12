@@ -25,14 +25,16 @@ const SignupForm = () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, { displayName: username });
-
+  
       await sendEmailVerification(userCredential.user);
-
+  
+      // Explicitly set the isVerified flag to false in the Firestore document
       await setDoc(doc(db, 'users', userCredential.user.uid), {
         username: username,
         email: email,
+        isVerified: false,
       });
-
+  
       await signOut(auth);
       navigate('/verify-email');
     } catch (error) {
