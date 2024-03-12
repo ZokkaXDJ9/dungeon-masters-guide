@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import CampaignOrganizer from './components/CampaignOrganizer';
 import CampaignDetails from './components/CampaignDetails';
@@ -16,7 +16,7 @@ const App = () => {
   const [campaigns, setCampaigns] = useState([]);
 
   return (
-    <Router>
+    <HashRouter>
       <div className="App">
         <NavBar />
         <Routes>
@@ -32,7 +32,7 @@ const App = () => {
 
         </Routes>
       </div>
-    </Router>
+    </HashRouter>
   );
 };
 
