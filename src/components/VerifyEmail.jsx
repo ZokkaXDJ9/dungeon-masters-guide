@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { auth } from '../firebaseConfig'; // Import auth instance from your config
-import { applyActionCode } from 'firebase/auth'; // Import applyActionCode directly from firebase/auth
+import { auth, db } from '../firebaseConfig'; // Ensure db is imported from your firebaseConfig
+import { applyActionCode, onAuthStateChanged } from 'firebase/auth'; // Import onAuthStateChanged
+import { doc, updateDoc } from 'firebase/firestore'; // Import updateDoc and doc
 
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();
@@ -15,11 +16,26 @@ const VerifyEmail = () => {
     if (mode === 'verifyEmail' && actionCode) {
       applyActionCode(auth, actionCode)
         .then(() => {
-          // Handle successful email verification here
-          navigate('/'); // Navigate to home or another relevant page
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              // User is signed in, update the Firestore directly
+              const userRef = doc(db, 'users', user.uid);
+              updateDoc(userRef, {
+                isVerified: true,
+              }).then(() => {
+                navigate('/'); // Navigate to home or another relevant page
+              }).catch((error) => {
+                // Handle Firestore update error
+                setError(error.message);
+              });
+            } else {
+              // If the user isn't signed in, handle accordingly
+              setError('Verification successful, please log in.');
+            }
+          });
         })
         .catch((error) => {
-          // Handle error
+          // Handle error from applyActionCode
           setError(error.message);
         });
     }
