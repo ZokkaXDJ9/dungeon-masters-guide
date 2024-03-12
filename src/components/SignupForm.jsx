@@ -28,7 +28,7 @@ const SignupForm = () => {
   
       await sendEmailVerification(userCredential.user);
   
-      // Explicitly set the isVerified flag to false in the Firestore document
+      // Set the isVerified flag to false in the Firestore document
       await setDoc(doc(db, 'users', userCredential.user.uid), {
         username: username,
         email: email,
@@ -36,7 +36,8 @@ const SignupForm = () => {
       });
   
       await signOut(auth);
-      navigate('/verify-email');
+      // Redirect to a custom page or display a message to check the email for verification
+      navigate('/check-email'); // This should be a route that informs the user to verify their email
     } catch (error) {
       setError(error.message);
       if (error.code === 'auth/email-already-in-use') {
@@ -54,30 +55,15 @@ const SignupForm = () => {
     <form onSubmit={handleSubmit}>
       <label>
         Username:
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required // Ensures the form cannot be submitted without filling this field
-        />
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
       </label>
       <label>
         Email:
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       </label>
       <label>
         Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </label>
       <button type="submit">Sign Up</button>
       {error && <p>{error}</p>}

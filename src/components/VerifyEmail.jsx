@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { auth, db } from '../firebaseConfig';
-import { applyActionCode, onAuthStateChanged } from 'firebase/auth';
-import { doc, updateDoc } from 'firebase/firestore';
+import { auth } from '../firebaseConfig'; // Import auth instance from your config
+import { applyActionCode } from 'firebase/auth'; // Import applyActionCode directly from firebase/auth
 
 const VerifyEmail = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [error, setError] = useState('');
 
@@ -16,24 +15,12 @@ const VerifyEmail = () => {
     if (mode === 'verifyEmail' && actionCode) {
       applyActionCode(auth, actionCode)
         .then(() => {
-          onAuthStateChanged(auth, (user) => {
-            if (user) {
-              // User is signed in, update the Firestore directly
-              const userRef = doc(db, 'users', user.uid);
-              updateDoc(userRef, {
-                isVerified: true,
-              }).then(() => {
-              }).catch((error) => {
-                setError(error.message);
-              });
-            } else {
-              // No user signed in, can't update Firestore. Prompt for login or handle accordingly.
-              navigate('/login', { state: { message: 'Please log in to verify your email.' } });
-            }
-          });
+          // Handle successful email verification here
+          navigate('/'); // Navigate to home or another relevant page
         })
         .catch((error) => {
-          setError('Failed to verify email. ' + error.message);
+          // Handle error
+          setError(error.message);
         });
     }
   }, [navigate, searchParams]);
@@ -41,7 +28,7 @@ const VerifyEmail = () => {
   return (
     <div>
       <h1>Verify Your Email</h1>
-      <p>{error ? error : 'Please wait, verifying your email...'}</p>
+      <p>{error || 'Verifying your email...'}</p>
     </div>
   );
 };
