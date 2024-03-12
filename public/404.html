@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <script>
+    // Check if the URL contains a path for redirection
+    const redirectedUrl = sessionStorage.redirect;
+    delete sessionStorage.redirect;
+    if (redirectedUrl) {
+      window.location.href = redirectedUrl;
+    } else {
+      // Fallback to homepage if no specific redirect path is found
+      window.location.href = '/verify-email';
+    }
+  </script>
+</head>
+<body>
+  <p>If you are not redirected automatically, follow the <a href='/'>link to the homepage</a></p>
+</body>
+</html>
