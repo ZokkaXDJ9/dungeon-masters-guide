@@ -1,5 +1,6 @@
 // src/components/LoginForm.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { auth } from '../firebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
@@ -7,6 +8,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -14,7 +16,7 @@ const LoginForm = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // Redirect the user or update the state after successful login
+      navigate('/'); // Redirect to the home page
     } catch (error) {
       setError(error.message);
     }

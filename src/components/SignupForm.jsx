@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { auth, db } from '../firebaseConfig';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
@@ -8,30 +9,38 @@ const SignupForm = () => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
+  const [showLoginButton, setShowLoginButton] = useState(false); // State to control the login button display
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
+    setShowLoginButton(false); // Reset the login button visibility
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, { displayName: username });
 
-      // Now, save the additional user info in Firestore
+      // Save the additional user info in Firestore
       await setDoc(doc(db, 'users', userCredential.user.uid), {
         username: username,
         email: email,
         // Add any other user info here
       });
 
-      // Reset form or navigate the user to another page
+      // Redirect the user after successful signup
+      navigate('/');
     } catch (error) {
       setError(error.message);
       if (error.code === 'auth/email-already-in-use') {
         setError('Email already in use. Please login.');
-        // Optionally, redirect to the login page or show a link to the login page
+        setShowLoginButton(true); // Show the login button
       }
     }
+  };
+
+  const navigateToLogin = () => {
+    navigate('/login'); // Navigate to the login page
   };
 
   return (
@@ -62,6 +71,7 @@ const SignupForm = () => {
       </label>
       <button type="submit">Sign Up</button>
       {error && <p>{error}</p>}
+      {showLoginButton && <button onClick={navigateToLogin}>Go to Login</button>}
     </form>
   );
 };

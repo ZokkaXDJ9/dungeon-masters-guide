@@ -45,7 +45,7 @@ nav {
     left: 0;
     top: 100%; /* Aligns the top of the submenu with the bottom of the user menu */
     background-color: #333;
-    min-width: 160px;
+    min-width: 152px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
   }
