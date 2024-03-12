@@ -23,7 +23,6 @@ const VerifyEmail = () => {
               updateDoc(userRef, {
                 isVerified: true,
               }).then(() => {
-                navigate('/'); // or wherever you want to redirect after verification
               }).catch((error) => {
                 setError(error.message);
               });
