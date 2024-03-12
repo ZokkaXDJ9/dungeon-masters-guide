@@ -4,18 +4,16 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script>
-    // Check if the URL contains a path for redirection
-    const redirectedUrl = sessionStorage.redirect;
-    delete sessionStorage.redirect;
-    if (redirectedUrl) {
-      window.location.href = redirectedUrl;
-    } else {
-      // Fallback to homepage if no specific redirect path is found
-      window.location.href = '/dungeon-masters-guide/';
-    }
+    (function() {
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect) {
+        window.location.href = redirect;
+      }
+    })();
   </script>
 </head>
 <body>
-  <p>If you are not redirected automatically, follow the <a href='/dungeon-masters-guide/'>link to the homepage</a></p>
+  <p>If you are not redirected automatically, follow the <a href="index.html">link to the homepage</a>.</p>
 </body>
 </html>
