@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './components/NavBar';
+import CampaignOrganizer from './components/CampaignOrganizer';
+import CampaignDetails from './components/CampaignDetails';
+import MainSite from './components/MainSite';
+import EncounterBuilder from './components/EncounterBuilder';
+import NPCGenerator from './components/NPCGenerator';
+import SignupForm from './components/SignupForm';
+import LoginForm from './components/LoginForm';
+import UserProfile from './components/UserProfile';
 
 const App = () => {
+  const [campaigns, setCampaigns] = useState([]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Dungeon Master Helper</h1>
-      </header>
-      <NavBar />
-      <main>
-        <section>
-          <h2>Welcome, Dungeon Master!</h2>
-          <p>This is your ultimate tool to manage and enhance your D&D sessions. Choose a feature from the menu to get started.</p>
-        </section>
-      </main>
-    </div>
+    <Router>
+      <div className="App">
+        <NavBar />
+        <Routes>
+          <Route path='/' element={<MainSite />}/>
+          <Route path="/campaign-organizer" element={<CampaignOrganizer campaigns={campaigns} setCampaigns={setCampaigns} />} />
+          <Route path="/campaign/:id" element={<CampaignDetails campaigns={campaigns} />} />
+          <Route path="/encounter-builder" element={<EncounterBuilder />} />
+          <Route path="/npc-generator" element={<NPCGenerator />} />
+          <Route path="/signup" element={<SignupForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/user-profile" element={<UserProfile />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 

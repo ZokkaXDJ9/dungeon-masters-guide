@@ -1,0 +1,36 @@
+/* src/components/MainSite.css */
+.main-site {
+    padding: 20px;
+  }
+  
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .feature-item {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .feature-item h2 {
+    margin-top: 0;
+  }
+  
+  .feature-item p {
+    font-size: 16px;
+  }
+  
+  .feature-item a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .feature-item a:hover {
+    text-decoration: underline;
+  }
+  

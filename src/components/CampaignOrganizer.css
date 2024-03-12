@@ -1,0 +1,63 @@
+/* src/components/CampaignOrganizer.css */
+.campaign-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .campaign-item:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .campaign-details {
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 20px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* src/components/CampaignOrganizer.css */
+.campaign-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .campaign-box {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+  }
+  
+  .campaign-box.add-new {
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+  }
+  

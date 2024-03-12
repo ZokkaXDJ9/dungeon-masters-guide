@@ -1,0 +1,79 @@
+/* NavBar.css */
+
+nav {
+    background-color: #333;
+    padding: 10px 20px;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  nav ul li {
+    padding: 10px;
+  }
+  
+  nav ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  nav ul li a:hover {
+    background-color: #555;
+  }
+  
+  /* This will ensure the auth link stays to the right */
+  .auth-link {
+    margin-left: auto;
+  }
+  .user-menu {
+    position: relative; /* Ensures the submenu is positioned relative to the user-menu */
+  }
+  
+  .user-menu .submenu {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%; /* Aligns the top of the submenu with the bottom of the user menu */
+    background-color: #333;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .user-menu:hover .submenu {
+    display: block; /* Keeps the submenu open when hovering over it */
+  }
+  
+  .submenu li {
+    padding: 8px; /* Reduced padding for smaller submenu items */
+    border-bottom: 1px solid #474747;
+  }
+  
+  .submenu li a, .submenu li button {
+    color: white;
+    text-decoration: none;
+    display: block;
+    font-size: 14px; /* Adjust font size for submenu items */
+  }
+  
+  .submenu li button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    text-align: left;
+  }
+  
+  .submenu li:last-child {
+    border-bottom: none;
+  }
