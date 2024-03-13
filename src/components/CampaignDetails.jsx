@@ -36,12 +36,20 @@ const CampaignDetails = ({ campaigns }) => {
   }, [id, campaigns]);
 
   const fetchNPCs = async (campaignId) => {
-    const npcsRef = collection(db, "npcs");
-    const q = query(npcsRef, where("campaignId", "==", campaignId));
-    const querySnapshot = await getDocs(q);
-    const npcsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    setNpcs(npcsData);
+    if (currentUser) {
+      const npcsRef = collection(db, "npcs");
+      const q = query(npcsRef, where("campaignId", "==", campaignId));
+      const querySnapshot = await getDocs(q);
+      const npcsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setNpcs(npcsData);
+    } else {
+      // Handle the offline scenario
+      const storedNpcs = JSON.parse(sessionStorage.getItem('npcs')) || [];
+      const filteredNpcs = storedNpcs.filter(npc => npc.campaignId === campaignId);
+      setNpcs(filteredNpcs);
+    }
   };
+  
 
   if (!campaign) {
     return <div>Campaign not found</div>;
