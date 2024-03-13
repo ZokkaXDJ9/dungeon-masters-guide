@@ -19,18 +19,32 @@ const NPCGenerator = () => {
       if (user) {
         fetchCampaigns(user.uid);
       } else {
-        setCampaigns(JSON.parse(sessionStorage.getItem('campaigns')) || []);
+        updateCampaignsFromSession();
       }
     });
     return () => unsubscribe();
   }, []);
-
+  
+  const updateCampaignsFromSession = () => {
+    const campaignsFromSession = JSON.parse(sessionStorage.getItem('campaigns')) || [];
+    setCampaigns(campaignsFromSession);
+    setSelectedCampaignId(campaignsFromSession.length > 0 ? campaignsFromSession[0].id : '');
+  }
+  
   const fetchCampaigns = async (userId) => {
     const q = query(collection(db, "campaigns"), where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
     const userCampaigns = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     setCampaigns(userCampaigns);
+    setSelectedCampaignId(userCampaigns.length > 0 ? userCampaigns[0].id : '');
   };
+  
+  useEffect(() => {
+    if (campaigns.length > 0 && !campaigns.some(c => c.id === selectedCampaignId)) {
+      setSelectedCampaignId(campaigns[0].id);
+    }
+  }, [campaigns]);
+  
 
   const names = {
     Human:{
