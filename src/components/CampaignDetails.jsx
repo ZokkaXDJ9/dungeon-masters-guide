@@ -36,20 +36,20 @@ const CampaignDetails = ({ campaigns }) => {
   }, [id, campaigns]);
 
   const fetchNPCs = async (campaignId) => {
-    if (currentUser) {
+    if (auth.currentUser) {
+      // User is online, fetch NPCs from Firestore
       const npcsRef = collection(db, "npcs");
       const q = query(npcsRef, where("campaignId", "==", campaignId));
       const querySnapshot = await getDocs(q);
       const npcsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setNpcs(npcsData);
     } else {
-      // Handle the offline scenario
+      // User is offline, fetch NPCs from session storage
       const storedNpcs = JSON.parse(sessionStorage.getItem('npcs')) || [];
       const filteredNpcs = storedNpcs.filter(npc => npc.campaignId === campaignId);
       setNpcs(filteredNpcs);
     }
   };
-  
 
   if (!campaign) {
     return <div>Campaign not found</div>;
