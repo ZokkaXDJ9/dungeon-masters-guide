@@ -22,7 +22,11 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "update-packages": "npm install graceful-fs@^4.0.0 && npm install @rollup/plugin-terser && npm install @babel/plugin-transform-nullish-coalescing-operator && npm install @babel/plugin-transform-class-properties && npm install @babel/plugin-transform-private-methods && npm install @babel/plugin-transform-numeric-separator && npm install @babel/plugin-transform-optional-chaining && npm uninstall natives stable @babel/plugin-proposal-nullish-coalescing-operator @babel/plugin-proposal-class-properties @babel/plugin-proposal-private-methods @babel/plugin-proposal-numeric-separator @babel/plugin-proposal-optional-chaining rollup-plugin-terser w3c-hr-time abab domexception har-validator cross-spawn-async minimatch sourcemap-codec uuid workbox-cacheable-response npmconf workbox-google-analytics request svgo",
+    "postupdate-packages": "npm dedupe"
+    
+    
   },
   "eslintConfig": {
     "extends": [
