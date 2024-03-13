@@ -81,6 +81,7 @@ const CampaignOrganizer = ({ campaigns, setCampaigns }) => {
   
 
   return (
+    <div>
     <div className="campaign-grid">
       {campaigns.map((campaign) => (
         <Link key={campaign.id} to={`/campaign/${campaign.id}`} className="campaign-box">
@@ -90,7 +91,6 @@ const CampaignOrganizer = ({ campaigns, setCampaigns }) => {
       <div className="campaign-box add-new" onClick={() => setIsModalOpen(true)}>
         <h3>+ Add New Campaign</h3>
       </div>
-
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <input
           type="text"
@@ -106,6 +106,12 @@ const CampaignOrganizer = ({ campaigns, setCampaigns }) => {
         <button onClick={addCampaign}>Create Campaign</button>
       </Modal>
     </div>
+    {!currentUser && (
+        <div className="test-mode-warning">
+          Warning! You are in Test Mode. Every Action you do will only be saved in your current session. 
+          If you want to save your progress, please <Link to="/signup">register</Link> or <Link to="/login">sign in</Link>.
+        </div>
+      )}</div>
   );
 };
 
