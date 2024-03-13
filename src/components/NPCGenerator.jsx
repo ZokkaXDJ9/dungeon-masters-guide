@@ -26,12 +26,12 @@ const NPCGenerator = () => {
       Female: ["Akra", "Fasaria", "Kava", "Heskan", "Myastan", "Daar", "Misrith", "Sirjik", "Umara", "Zofia", "Yrjixtilex", "Saphara", "Jheri", "Biri", "Thava", "Korinn", "Belaxarim", "Otiyax", "Surina", "Tamara"],
       Family: ["Fireforge", "Frostclaw", "Stormscale", "Blazefang", "Thunderscale", "Ironhide", "Goldenscale", "Platinumclaw", "Copperwing", "Silvermaw"],
     },
-    Gnomes: {
+    Gnome: {
       Male: ["Fizzbang", "Rondo", "Boddynock", "Dimble", "Fonkin", "Gorbo", "Jib", "Kellen", "Namfoodle", "Orryn", "Roondar", "Seebo", "Sindri", "Wrenn", "Zook", "Bingle", "Gerbo", "Quillsharpener", "Tilver", "Bilbron"],
       Female: ["Bimpnottin", "Caramip", "Duvamil", "Ellyjobell", "Ellywick", "Lilli", "Loopmottin", "Mardnab", "Nissa", "Nyx", "Oda", "Orla", "Roywyn", "Shamil", "Tana", "Waywocket", "Zanna", "Karina", "Frixell", "Pireena"],
       Family: ["Gearspark", "Coppercoil", "Gizmoflare", "Steamwhistle", "Tinkerturn", "Blastcog", "Springlock", "Widgetwrench", "Cogspin", "Rivetbeard"],
     },
-    Halflings: {
+    Halfling: {
       Male: ["Andwise", "Brando", "Cade", "Diggory", "Eldon", "Finnigan", "Garret", "Harol", "Issac", "Lyle", "Milo", "Ned", "Osborn", "Perry", "Quint", "Roscoe", "Sanford", "Theo", "Ulmo", "Wilcome"],
       Female: ["Amara", "Bell", "Coral", "Daphne", "Eglantine", "Fenna", "Grace", "Helga", "Ivy", "Jasmine", "Kithri", "Lavinia", "Marigold", "Nellie", "Opal", "Poppy", "Quintessa", "Rosalind", "Seraphina", "Tansy"],
       Family: ["Greenbottle", "Brushgather", "Tallfellow", "Underhill", "Goodbarrel", "Leafwort", "Hilltopple", "Proudfoot", "Appledore", "Thistlewick"],
