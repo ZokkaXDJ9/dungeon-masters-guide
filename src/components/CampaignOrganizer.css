@@ -61,3 +61,15 @@
     color: white;
   }
   
+  .modal-error-message {
+    height: 20px; /* Reserve space for the error message */
+    color: red;
+    text-align: center;
+  }
+  
+  /* Add more styles to control your modal size if necessary */
+  .modal-content {
+    min-height: 200px; /* Adjust based on your needs */
+    min-width: 300px;  /* Adjust based on your needs */
+    /* Other styling */
+  }
