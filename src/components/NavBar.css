@@ -37,6 +37,7 @@ nav {
   }
   .user-menu {
     position: relative; /* Ensures the submenu is positioned relative to the user-menu */
+    color: white;
   }
   
   .user-menu .submenu {
