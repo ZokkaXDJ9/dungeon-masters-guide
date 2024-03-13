@@ -10,6 +10,7 @@ import SignupForm from './components/SignupForm';
 import LoginForm from './components/LoginForm';
 import UserProfile from './components/UserProfile';
 import VerifyEmail from './components/VerifyEmail';
+import NPCDetails from './components/NPCDetails';
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/user-profile" element={<UserProfile />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/npcs/:npcId" element={<NPCDetails />} />
 
         </Routes>
       </div>
