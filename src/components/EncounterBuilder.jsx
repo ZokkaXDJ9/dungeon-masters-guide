@@ -1,5 +1,7 @@
 // src/components/EncounterBuilder.jsx
 import React, { useState } from 'react';
+import './EncounterBuilder.css';
+
 
 const EncounterBuilder = () => {
   // Placeholder state - eventually this will be fetched from your database
@@ -7,9 +9,11 @@ const EncounterBuilder = () => {
 
   return (
     <div className="encounter-builder">
+          <div className="main-site">
       <h1>Encounter Builder</h1>
       <p>Plan and manage your encounters by adding monsters and setting the scene for your next adventure.</p>
-
+      <p>Is currently under development!</p>
+      </div>
       {/* List monsters here */}
       <div className="monster-list">
         {monsters.map((monster, index) => (

@@ -97,6 +97,7 @@ const CampaignOrganizer = ({ campaigns, setCampaigns }) => {
 
   return (
     <div>
+      <h1 className='main-site'>Campaign Organizer</h1>
     <div className="campaign-grid">
       {campaigns.map((campaign) => (
         <Link key={campaign.id} to={`/campaign/${campaign.id}`} className="campaign-box">

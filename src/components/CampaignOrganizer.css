@@ -73,3 +73,8 @@
     min-width: 300px;  /* Adjust based on your needs */
     /* Other styling */
   }
+  .test-mode-warning{
+    font-size: 16px;
+    padding: 20px;
+    border-radius: 8px;
+  }
