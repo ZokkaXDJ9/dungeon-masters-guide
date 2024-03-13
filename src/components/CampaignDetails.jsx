@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { auth, db } from '../firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import './MainSite.css';
 
 const CampaignDetails = ({ campaigns }) => {
   const { id } = useParams();
   const [campaign, setCampaign] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [npcs, setNpcs] = useState([]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -55,19 +58,19 @@ const CampaignDetails = ({ campaigns }) => {
     return <div>Campaign not found</div>;
   }
 
+  const notes = Array.isArray(campaign.notes) ? campaign.notes : [];
+
   return (
-    <div>
+    <div className='main-site'>
       <h2>{campaign.title}</h2>
       <p>{campaign.description}</p>
       <h3>Game Details</h3>
       <p><strong>Game Name:</strong> {campaign.gameName}</p>
       <p><strong>Next Session:</strong> {campaign.nextSession}</p>
-      <h3>Fun Stats</h3>
-      <p><strong>Monsters Slain:</strong> {campaign.stats ? campaign.stats.numberOfMonstersSlain : 'N/A'}</p>
-      <p><strong>Treasure Collected:</strong> {campaign.stats ? campaign.stats.treasureCollected : 'N/A'}</p>
       <h3>Notes</h3>
       <ul>
-        {campaign.notes.map((note, index) => <li key={index}>{note}</li>)}
+        {notes.map((note, index) => <li key={index}>{note}</li>)}
+        <button style={{ width: '250px' }} onClick={() => navigate(`/note-editor/${campaign.id}`)}>Edit Notes</button>
       </ul>
       <h3>NPCs</h3>
       <ul>
