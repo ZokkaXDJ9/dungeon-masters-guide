@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/dungeon-masters-guide/static/css/main.07554e77.css",
-    "main.js": "/dungeon-masters-guide/static/js/main.ba24300d.js",
+    "main.js": "/dungeon-masters-guide/static/js/main.354bc56f.js",
     "index.html": "/dungeon-masters-guide/index.html",
     "main.07554e77.css.map": "/dungeon-masters-guide/static/css/main.07554e77.css.map",
-    "main.ba24300d.js.map": "/dungeon-masters-guide/static/js/main.ba24300d.js.map"
+    "main.354bc56f.js.map": "/dungeon-masters-guide/static/js/main.354bc56f.js.map"
   },
   "entrypoints": [
     "static/css/main.07554e77.css",
-    "static/js/main.ba24300d.js"
+    "static/js/main.354bc56f.js"
   ]
 }
