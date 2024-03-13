@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { auth, db } from '../firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 
 const CampaignDetails = ({ campaigns }) => {
   const { id } = useParams();
   const [campaign, setCampaign] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [npcs, setNpcs] = useState([]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -19,6 +20,7 @@ const CampaignDetails = ({ campaigns }) => {
 
           if (docSnap.exists()) {
             setCampaign({ id: docSnap.id, ...docSnap.data() });
+            fetchNPCs(docSnap.id);
           } else {
             console.log("No such campaign!");
           }
@@ -28,9 +30,18 @@ const CampaignDetails = ({ campaigns }) => {
       } else {
         const localCampaign = campaigns.find(c => c.id.toString() === id);
         setCampaign(localCampaign);
+        fetchNPCs(localCampaign.id);
       }
     });
   }, [id, campaigns]);
+
+  const fetchNPCs = async (campaignId) => {
+    const npcsRef = collection(db, "npcs");
+    const q = query(npcsRef, where("campaignId", "==", campaignId));
+    const querySnapshot = await getDocs(q);
+    const npcsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setNpcs(npcsData);
+  };
 
   if (!campaign) {
     return <div>Campaign not found</div>;
@@ -49,6 +60,14 @@ const CampaignDetails = ({ campaigns }) => {
       <h3>Notes</h3>
       <ul>
         {campaign.notes.map((note, index) => <li key={index}>{note}</li>)}
+      </ul>
+      <h3>NPCs</h3>
+      <ul>
+        {npcs.map((npc, index) => (
+          <li key={index}>
+            <Link to={`/npcs/${npc.id}`}>{npc.name}</Link>
+          </li>
+        ))}
       </ul>
     </div>
   );

@@ -1,9 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { db, auth } from '../firebaseConfig';
+import { addDoc, collection, query, where, getDocs, } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
+
 
 const NPCGenerator = () => {
-  const [npcName, setNpcName] = useState('');
-  const [race, setRace] = useState('');
-  const [gender, setGender] = useState('');
+  const [npc, setNpc] = useState({ name: '', race: '', gender: '', profession: '' });
+  const [campaigns, setCampaigns] = useState(JSON.parse(sessionStorage.getItem('campaigns')) || []);
+  const [selectedCampaignId, setSelectedCampaignId] = useState(campaigns[0]?.id || '');
+  const [race, setRace] = useState(''); // Adding race state
+  const [gender, setGender] = useState(''); // Adding gender state
+  const [npcs, setNpcs] = useState(JSON.parse(sessionStorage.getItem('npcs')) || []);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      setCurrentUser(user);
+      if (user) {
+        fetchCampaigns(user.uid);
+      } else {
+        setCampaigns(JSON.parse(sessionStorage.getItem('campaigns')) || []);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const fetchCampaigns = async (userId) => {
+    const q = query(collection(db, "campaigns"), where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+    const userCampaigns = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setCampaigns(userCampaigns);
+  };
 
   const names = {
     Human:{
@@ -39,9 +66,6 @@ Halfling: {
 
   };
 
-  const getRandomElement = (array) => {
-    return array[Math.floor(Math.random() * array.length)];
-  };
 
   const professions = [
     "Warrior", "Mage", "Blacksmith", "Merchant", "Scholar", "Bard", "Carpenter", "Farmer", "Hunter", "Doctor",
@@ -52,72 +76,88 @@ Halfling: {
   ];
   
 
+  const getRandomElement = (array) => {
+    return array[Math.floor(Math.random() * array.length)];
+  };
+
   const generateNPC = () => {
-    let selectedRace = race;
-    let selectedGender = gender;
-  
-    // If race or gender is "Random", choose them randomly
-    if (!race || race === "Random") selectedRace = getRandomElement(Object.keys(names));
-    if (!gender || gender === "Random") {
-      const possibleGenders = Object.keys(names[selectedRace]).filter(option => option !== "Family");
-      selectedGender = getRandomElement(possibleGenders);
-    }
-  
+    let selectedRace = race || getRandomElement(Object.keys(names));
+    let possibleGenders = Object.keys(names[selectedRace]).filter(g => g !== "Family");
+    let selectedGender = gender || getRandomElement(possibleGenders);
+
     const raceNames = names[selectedRace][selectedGender];
     const randomFirstName = getRandomElement(raceNames);
     const randomFamilyName = getRandomElement(names[selectedRace].Family);
     const randomProfession = getRandomElement(professions);
-  
-    const generatedName = `${randomFirstName} ${randomFamilyName}`;
-  
-    setNpcName({
-      name: generatedName,
+
+    const generatedNPC = {
+      name: `${randomFirstName} ${randomFamilyName}`,
       race: selectedRace,
       gender: selectedGender,
-      profession: randomProfession
-    });
+      profession: randomProfession,
+    };
+
+    setNpc(generatedNPC);
   };
-    
+
+  const saveNPC = async () => {
+    if (!npc.name) {
+      alert('Please generate an NPC before saving.');
+      return;
+    }
+
+    const npcToSave = { ...npc, campaignId: selectedCampaignId };
+
+    if (currentUser) {
+      try {
+        await addDoc(collection(db, "npcs"), {
+          ...npcToSave,
+          userId: currentUser.uid,
+        });
+        alert('NPC saved successfully in the database!');
+      } catch (error) {
+        console.error('Error saving the NPC: ', error);
+        alert('Failed to save NPC.');
+      }
+    } else {
+      const newNpcs = [...npcs, npcToSave];
+      setNpcs(newNpcs);
+      sessionStorage.setItem('npcs', JSON.stringify(newNpcs));
+      alert('NPC saved successfully in the session!');
+    }
+  };
+
   return (
     <div>
       <h2>Random NPC Generator</h2>
-      <label>
-        Race:
-        <select value={race} onChange={(e) => setRace(e.target.value)}>
-          <option value="">Random</option>
-          {Object.keys(names).map((race, index) => (
-            <option key={index} value={race}>{race}</option>
-          ))}
-        </select>
-      </label>
-      <br />
-      <label>
-  Gender:
-  <select value={gender} onChange={(e) => setGender(e.target.value)}>
-    <option value="">Random</option>
-    {race &&
-      Object.keys(names[race]).filter(genderOption => genderOption !== "Family").map((gender, index) => (
-        <option key={index} value={gender}>
-          {gender}
-        </option>
-      ))}
-  </select>
-</label>
-      <br />
-      <button onClick={generateNPC}>Generate NPC</button>
-      <br />
-      {npcName && (
-        <div>
-  <h3>Generated NPC:</h3>
-  <p>
-    <strong>Name:</strong> {npcName.name}<br />
-    <strong>Race:</strong> {npcName.race}<br />
-    <strong>Gender:</strong> {npcName.gender}<br />
-    <strong>Profession:</strong> {npcName.profession}<br />
-
-  </p>
-</div>
-      )}
+      <div>
+        <label>
+          Select Campaign:
+          <select value={selectedCampaignId} onChange={(e) => setSelectedCampaignId(e.target.value)}>
+            {campaigns.map((campaign) => (
+              <option key={campaign.id} value={campaign.id}>{campaign.title}</option>
+            ))}
+          </select>
+        </label>
+        <button onClick={generateNPC}>Generate NPC</button>
+        <button onClick={saveNPC}>Save NPC</button>
+      </div>
+      <div>
+        <h3>Generated NPC:</h3>
+        {npc.name && (
+          <p>{npc.name} - {npc.race} - {npc.gender} - {npc.profession}</p>
+        )}
+        <h3>Saved NPCs:</h3>
+        {npcs.length > 0 ? (
+          npcs.map((npc, index) => (
+            <div key={index}>
+              <p>{npc.name} - {npc.race} - {npc.gender} - {npc.profession} - Campaign ID: {npc.campaignId}</p>
+            </div>
+          ))
+        ) : (
+          <p>No NPCs saved.</p>
+        )}
+      </div>
     </div>
   );
 };
