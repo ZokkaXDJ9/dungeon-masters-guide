@@ -7,7 +7,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 const NPCGenerator = () => {
   const [npc, setNpc] = useState({ name: '', race: '', gender: '', profession: '' });
   const [campaigns, setCampaigns] = useState(JSON.parse(sessionStorage.getItem('campaigns')) || []);
-  const [selectedCampaignId, setSelectedCampaignId] = useState(campaigns[0]?.id || '');
+  const [selectedCampaignId, setSelectedCampaignId] = useState(campaigns.length > 0 ? campaigns[0]?.id : '');
   const [race, setRace] = useState(''); // Adding race state
   const [gender, setGender] = useState(''); // Adding gender state
   const [npcs, setNpcs] = useState(JSON.parse(sessionStorage.getItem('npcs')) || []);
@@ -120,11 +120,19 @@ Halfling: {
         alert('Failed to save NPC.');
       }
     } else {
-      const newNpcs = [...npcs, npcToSave];
-      setNpcs(newNpcs);
-      sessionStorage.setItem('npcs', JSON.stringify(newNpcs));
-      alert('NPC saved successfully in the session!');
-    }
+        const localCampaigns = JSON.parse(sessionStorage.getItem('campaigns')) || [];
+        const campaignExists = localCampaigns.some(camp => camp.id === selectedCampaignId);
+      
+        if (!campaignExists) {
+          alert("Selected campaign does not exist.");
+          return;
+        }
+      
+        const updatedNpcs = [...npcs, { ...npcToSave, id: String(npcs.length + 1) }]; // Assign a new ID to the NPC for consistency
+        setNpcs(updatedNpcs);
+        sessionStorage.setItem('npcs', JSON.stringify(updatedNpcs));
+        alert('NPC saved successfully in the session!');
+      }
   };
 
   return (

@@ -22,6 +22,18 @@ const CampaignOrganizer = ({ campaigns, setCampaigns }) => {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      if (!user) {
+        const storedCampaigns = JSON.parse(sessionStorage.getItem('campaigns')) || [];
+        setCampaigns(storedCampaigns);
+      } else {
+        fetchCampaigns(user.uid);
+      }
+    });
+  }, []);
+
   const fetchCampaigns = async (userId) => {
     const q = query(collection(db, "campaigns"), where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
@@ -69,9 +81,12 @@ const CampaignOrganizer = ({ campaigns, setCampaigns }) => {
       setCampaigns([...campaigns, newCampaign]);
     } else {
       // No user logged in, use local state and sequential IDs
-      newCampaign.id = campaigns.length + 1;
-      newCampaign.numericId = campaigns.length + 1; // Use the same value for numericId in test mode
-      setCampaigns([...campaigns, newCampaign]);
+      newCampaign.id = String(campaigns.length + 1); // Make sure IDs are strings for consistency
+      newCampaign.numericId = campaigns.length + 1;
+      const updatedCampaigns = [...campaigns, newCampaign];
+      setCampaigns(updatedCampaigns);
+      sessionStorage.setItem('campaigns', JSON.stringify(updatedCampaigns));
+    
     }
   
     setNewCampaignTitle('');
