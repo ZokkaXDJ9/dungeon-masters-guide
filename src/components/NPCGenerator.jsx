@@ -43,8 +43,14 @@ Halfling: {
     return array[Math.floor(Math.random() * array.length)];
   };
 
-  const professions = ["Warrior", "Mage", "Blacksmith", "Merchant", "Scholar", "Bard", "Carpenter", "Farmer", "Hunter", "Doctor", "Alchemist", "Cleric", "Diplomat", "Seamstress", "Scribe", "Tailor"];
-
+  const professions = [
+    "Warrior", "Mage", "Blacksmith", "Merchant", "Scholar", "Bard", "Carpenter", "Farmer", "Hunter", "Doctor",
+    "Alchemist", "Cleric", "Diplomat", "Seamstress", "Scribe", "Tailor", "Rogue", "Paladin", "Necromancer", "Druid",
+    "Ranger", "Artificer", "Sorcerer", "Assassin", "Monk", "Barbarian", "Enchanter", "Diviner", "Illusionist", "Beastmaster",
+    "Herbalist", "Cartographer", "Summoner", "Thief", "Warlock", "Elementalist", "Archaeologist", "Spy", "Dungeon Delver", "Gladiator",
+    "Jeweler", "Miner", "Politician", "Priest", "Sailor", "Smith", "Tinker", "Trapper", "Brewer", "Fletcher"
+  ];
+  
 
   const generateNPC = () => {
     let selectedRace = race;
