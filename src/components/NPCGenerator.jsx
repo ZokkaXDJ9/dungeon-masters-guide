@@ -150,38 +150,86 @@ Halfling: {
   };
 
   return (
-    <div>
-      <h2>Random NPC Generator</h2>
-      <div>
+    <div style={{ fontFamily: 'Arial, sans-serif', margin: 'auto', padding: '20px' }}>
+      <h2 style={{ textAlign: 'center' }}>Random NPC Generator</h2>
+      <div style={{ marginBottom: '20px', textAlign: 'center' }}>
         <label>
           Select Campaign:
-          <select value={selectedCampaignId} onChange={(e) => setSelectedCampaignId(e.target.value)}>
+          <select 
+            value={selectedCampaignId} 
+            onChange={(e) => setSelectedCampaignId(e.target.value)} 
+            style={{ marginLeft: '10px', padding: '5px', borderRadius: '5px' }}
+          >
             {campaigns.map((campaign) => (
               <option key={campaign.id} value={campaign.id}>{campaign.title}</option>
             ))}
           </select>
         </label>
-        <button onClick={generateNPC}>Generate NPC</button>
-        <button onClick={saveNPC}>Save NPC</button>
       </div>
-      <div>
-        <h3>Generated NPC:</h3>
-        {npc.name && (
-          <p>{npc.name} - {npc.race} - {npc.gender} - {npc.profession}</p>
-        )}
-        <h3>Saved NPCs:</h3>
-        {npcs.length > 0 ? (
-          npcs.map((npc, index) => (
-            <div key={index}>
-              <p>{npc.name} - {npc.race} - {npc.gender} - {npc.profession} - Campaign ID: {npc.campaignId}</p>
+      <div style={{ marginBottom: '20px', textAlign: 'center'}}>
+        <button 
+          onClick={generateNPC} 
+          style={{ 
+            marginLeft: '10px', 
+            padding: '8px 12px', 
+            borderRadius: '5px', 
+            cursor: 'pointer', 
+            fontSize: '14px', 
+            width: '120px',
+            textAlign: 'center'
+          }}
+        >
+          Generate NPC
+        </button>
+        </div>
+      {npc.name && (
+        <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+          <h3>Generated NPC:</h3>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+            <div style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '5px', textAlign: 'left' }}>
+              <p><strong>Name:</strong> {npc.name}</p>
+              <p><strong>Race:</strong> {npc.race}</p>
+              <p><strong>Gender:</strong> {npc.gender}</p>
+              <p><strong>Profession:</strong> {npc.profession}</p>
             </div>
-          ))
-        ) : (
-          <p>No NPCs saved.</p>
-        )}
+          </div>
+          <button 
+              onClick={saveNPC} 
+              style={{ 
+                alignSelf: 'start',
+                marginTop: '10px', 
+                padding: '8px 12px', 
+                borderRadius: '5px', 
+                cursor: 'pointer', 
+                fontSize: '14px', 
+                width: '120px'
+              }}
+            >
+              Save NPC
+            </button>
+        </div>
+      )}
+      <div>
+        <h3>Saved NPCs:</h3>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+          {npcs.length > 0 ? (
+            npcs.map((npc, index) => (
+              <div key={index} style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '5px' }}>
+                <p><strong>Name:</strong> {npc.name}</p>
+                <p><strong>Race:</strong> {npc.race}</p>
+                <p><strong>Gender:</strong> {npc.gender}</p>
+                <p><strong>Profession:</strong> {npc.profession}</p>
+                <p><strong>Campaign ID:</strong> {npc.campaignId}</p>
+              </div>
+            ))
+          ) : (
+            <p>No NPCs saved.</p>
+          )}
+        </div>
       </div>
     </div>
   );
-};
+  
+}
 
 export default NPCGenerator;
