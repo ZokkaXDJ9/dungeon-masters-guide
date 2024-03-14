@@ -42,10 +42,46 @@ const NoteEditor = ({ campaigns, setCampaigns }) => {
   return (
     <div>
       <h1>Edit Notes</h1>
-      <ReactQuill theme="snow" value={note} onChange={setNote} />
+      <CustomToolbar />
+      <ReactQuill theme="snow" value={note} onChange={setNote} modules={{
+          toolbar: {
+            container: "#toolbar",
+          }
+        }}
+/>
       <button onClick={saveNote}>Save Note</button>
     </div>
   );
 };
+
+
+const CustomToolbar = () => (
+  <div id="toolbar">
+    <select className="ql-header" defaultValue={""} onChange={e => e.persist()}>
+      <option value="1">Heading</option>
+      <option value="2">Subheading</option>
+      <option selected>Normal</option>
+    </select>
+    <button className="ql-bold"></button>
+    <button className="ql-italic"></button>
+    <button className="ql-underline"></button>
+    <button className="ql-strike"></button>
+    <select className="ql-color">
+      <option value="red">Red</option>
+      <option value="green">Green</option>
+      <option value="blue">Blue</option>
+      <option value="orange">Orange</option>
+      <option value="violet">Violet</option>
+      <option value="#d0d1d2">Grey</option>
+    </select>
+    <button className="ql-list" value="ordered"></button>
+    <button className="ql-list" value="bullet"></button>
+    <button className="ql-link"></button>
+    <button className="ql-image"></button>
+    <button className="ql-video"></button>
+  </div>
+);
+
+
 
 export default NoteEditor;

@@ -12,6 +12,7 @@ import UserProfile from './components/UserProfile';
 import VerifyEmail from './components/VerifyEmail';
 import NPCDetails from './components/NPCDetails';
 import NoteEditor from './components/NoteEditor';
+import MonsterCreator from './components/MonsterCreator';
 
 const App = () => {
   const [campaigns, setCampaigns] = useState([]);
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/npcs/:npcId" element={<NPCDetails />} />
           <Route path="/note-editor/:campaignId" element={<NoteEditor campaigns={campaigns} setCampaigns={setCampaigns} />} />
+          <Route path="/monster-creator" element={<MonsterCreator />} />
 
         </Routes>
       </div>
