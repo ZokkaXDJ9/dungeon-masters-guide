@@ -194,21 +194,21 @@ function MonsterCreator() {
             placeholder="Action Name"
             value={action.name}
             onChange={(e) => handleChange(e, `action.name.${index}`)}
-            style={{ /* Input Styling */ }}
+            style={{ fontWeight: 'bold', fontStyle: 'italic' }}
           />
           <input
             type="text"
             placeholder="Action Description"
             value={action.description}
             onChange={(e) => handleChange(e, `action.description.${index}`)}
-            style={{ /* Input Styling */ }}
+            style={{ width: '100%' }}
           />
           <input
             type="text"
             placeholder="Action Hit"
             value={action.hit}
             onChange={(e) => handleChange(e, `action.hit.${index}`)}
-            style={{ /* Input Styling */ }}
+            style={{ width: '100%' }}
           />
           <button onClick={() => removeAction(index)} style={{ /* Button Styling */ }}>Remove</button>
         </div>
